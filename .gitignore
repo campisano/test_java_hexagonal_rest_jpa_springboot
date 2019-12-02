@@ -1,0 +1,7 @@
+/target/
+/db/
+
+# eclipse stuffs
+/.classpath
+/.project
+/.settings/

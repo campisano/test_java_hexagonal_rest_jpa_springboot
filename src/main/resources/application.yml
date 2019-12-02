@@ -1,0 +1,30 @@
+project:
+  name: test-java-rest-jpa
+
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ${project.name}
+  main.banner-mode: 'off'
+  datasource:
+    driverClassName: org.h2.Driver
+    username: sa
+    password: sa
+    url: jdbc:h2:file:./db/testdb;DB_CLOSE_ON_EXIT=TRUE
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update

@@ -2,5 +2,5 @@
 
 set -o errexit -o nounset -o pipefail
 
-NAME=$(set -e; mvn -B -q help:evaluate -Dexpression=project.name -DforceStdout)
+NAME=$(mvn -B -q help:evaluate -Dexpression=project.name -DforceStdout)
 echo "${NAME}"

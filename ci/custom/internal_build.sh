@@ -6,15 +6,9 @@ apt-get -qq -y update
 apt-get -qq -y install curl tar gzip > /dev/null
 apt-get -qq -y clean
 
-MVN_VER="3.6.2"
-URL="http://www-eu.apache.org/dist/maven/maven-3/${MVN_VER}/binaries/apache-maven-${MVN_VER}-bin.tar.gz"
-curl -s -C - -kLO "${URL}"
-tar -C /usr/local -xzf "apache-maven-${MVN_VER}-bin.tar.gz"
-rm -f "apache-maven-${MVN_VER}-bin.tar.gz"
-
-export PATH="/usr/local/apache-maven-${MVN_VER}/bin:$PATH"
+./ci/custom/install_maven.sh
 mvn -B -ntp clean test package spring-boot:repackage
 
-PACKAGE="$(set -e; mvn -B -q help:evaluate -Dexpression=project.build.finalName -DforceStdout).jar"
-FOLDER="$(set -e; mvn -B -q help:evaluate -Dexpression=project.build.directory -DforceStdout)"
+PACKAGE="$(mvn -B -q help:evaluate -Dexpression=project.build.finalName -DforceStdout).jar"
+FOLDER="$(mvn -B -q help:evaluate -Dexpression=project.build.directory -DforceStdout)"
 cp -a "${FOLDER}/${PACKAGE}" app.jar

@@ -3,7 +3,7 @@
 set -x -o errexit -o nounset -o pipefail
 
 # vars
-export DOCKER_FROM_IMAGE=$(set -e; ./ci/custom/get_docker_from_image.sh)
+export DOCKER_FROM_IMAGE=$(./ci/custom/get_docker_from_image.sh)
 
 # build and test
 docker pull "${DOCKER_FROM_IMAGE}"

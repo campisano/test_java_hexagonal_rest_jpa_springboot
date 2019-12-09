@@ -15,6 +15,6 @@ rm -f "apache-maven-${MVN_VER}-bin.tar.gz"
 export PATH="/usr/local/apache-maven-${MVN_VER}/bin:$PATH"
 mvn -B -ntp clean test package spring-boot:repackage
 
-PACKAGE="$(mvn -B -q help:evaluate -Dexpression=project.build.finalName -DforceStdout).jar"
-FOLDER="$(mvn -B -q help:evaluate -Dexpression=project.build.directory -DforceStdout)"
+PACKAGE="$(set -e; mvn -B -q help:evaluate -Dexpression=project.build.finalName -DforceStdout).jar"
+FOLDER="$(set -e; mvn -B -q help:evaluate -Dexpression=project.build.directory -DforceStdout)"
 cp -a "${FOLDER}/${PACKAGE}" app.jar

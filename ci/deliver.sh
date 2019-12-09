@@ -3,9 +3,9 @@
 set -x -o errexit -o nounset -o pipefail
 
 # vars
-export DOCKER_FROM_IMAGE=$(./ci/custom/get_docker_from_image.sh)
-export PROJECT_NAME=$(./ci/custom/get_project_name.sh)
-export PROJECT_VERSION=$(./ci/custom/get_project_version.sh)
+export DOCKER_FROM_IMAGE=$(set -e; ./ci/custom/get_docker_from_image.sh)
+export PROJECT_NAME=$(set -e; ./ci/custom/get_project_name.sh)
+export PROJECT_VERSION=$(set -e; ./ci/custom/get_project_version.sh)
 export RELEASE_TAG="${PROJECT_NAME}-${PROJECT_VERSION}"
 
 # grant docker login

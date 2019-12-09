@@ -1,10 +1,10 @@
 #!/bin/bash
 
-set -o errtrace -o errexit -o nounset -o pipefail
+set -x -o errtrace -o errexit -o nounset -o pipefail
 
-apt-get -qq update
-apt-get -qq -y -o Dpkg::Use-Pty=0 install curl tar gzip
-apt-get -qq clean
+apt-get -qq -y update
+apt-get -qq -y install curl tar gzip > /dev/null
+apt-get -qq -y clean
 
 MVN_VER="3.6.2"
 URL="http://www-eu.apache.org/dist/maven/maven-3/${MVN_VER}/binaries/apache-maven-${MVN_VER}-bin.tar.gz"

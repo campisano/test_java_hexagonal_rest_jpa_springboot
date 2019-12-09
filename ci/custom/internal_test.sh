@@ -1,6 +1,4 @@
-#!/bin/bash
-
-set -x -o errtrace -o errexit -o nounset -o pipefail
+#!/usr/bin/env bash
 
 # test step is accomplished by maven during build step
 true

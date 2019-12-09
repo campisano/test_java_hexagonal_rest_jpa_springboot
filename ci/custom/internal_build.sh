@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -x -o errtrace -o errexit -o nounset -o pipefail
+set -x -o errexit -o nounset -o pipefail
 
 apt-get -qq -y update
 apt-get -qq -y install curl tar gzip > /dev/null

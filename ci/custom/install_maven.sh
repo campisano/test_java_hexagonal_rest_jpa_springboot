@@ -7,5 +7,4 @@ URL="http://www-eu.apache.org/dist/maven/maven-3/${MVN_VER}/binaries/apache-mave
 curl -s -C - -kLO "${URL}"
 tar -C /usr/local -xzf "apache-maven-${MVN_VER}-bin.tar.gz"
 rm -f "apache-maven-${MVN_VER}-bin.tar.gz"
-
-export PATH="/usr/local/apache-maven-${MVN_VER}/bin:$PATH"
+ls -s "/usr/local/apache-maven-${MVN_VER}/bin/mvn" /usr/local/bin

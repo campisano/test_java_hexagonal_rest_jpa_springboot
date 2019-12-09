@@ -2,7 +2,7 @@
 
 set -x -o errexit -o nounset -o pipefail
 
-./ci/custom/install_maven.sh
+apt-get install maven
 
 # vars
 export DOCKER_FROM_IMAGE=$(./ci/custom/get_docker_from_image.sh)

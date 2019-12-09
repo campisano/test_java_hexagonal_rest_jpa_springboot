@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -o errtrace -o errexit -o nounset -o pipefail
-
+set -x
 apt-get -q update
 apt-get -q -y install curl tar gzip
 apt-get clean

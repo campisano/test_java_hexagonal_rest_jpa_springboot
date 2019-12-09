@@ -13,6 +13,7 @@ tar -C /usr/local -xzf "apache-maven-${MVN_VER}-bin.tar.gz"
 rm -f "apache-maven-${MVN_VER}-bin.tar.gz"
 
 export PATH="/usr/local/apache-maven-${MVN_VER}/bin:$PATH"
+export MAVEN_OPTS="-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 mvn clean test package spring-boot:repackage
 
 PACKAGE="$(mvn -o -q -B help:evaluate -Dexpression=project.build.finalName -DforceStdout).jar"

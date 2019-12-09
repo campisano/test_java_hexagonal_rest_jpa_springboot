@@ -16,4 +16,5 @@ export PATH="/usr/local/apache-maven-${MVN_VER}/bin:$PATH"
 mvn clean test package spring-boot:repackage
 
 PACKAGE="$(mvn -o -q -B help:evaluate -Dexpression=project.build.finalName -DforceStdout).jar"
-mv "${PACKAGE}" app.jar
+FOLDER="$(mvn -o -q -B help:evaluate -Dexpression=project.build.directory -DforceStdout)"
+cp -a "${FOLDER}/${PACKAGE}" app.jar

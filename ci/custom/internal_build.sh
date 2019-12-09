@@ -2,9 +2,8 @@
 
 set -o errtrace -o errexit -o nounset -o pipefail
 
-export DEBIAN_FRONTEND=noninteractive
 apt-get -qq update
-apt-get -qq -y install curl tar gzip
+apt-get -qq -y -o Dpkg::Use-Pty=0 install curl tar gzip
 apt-get -qq clean
 
 MVN_VER="3.6.2"

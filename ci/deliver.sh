@@ -10,7 +10,7 @@ fn_abort()
 }
 
 trap fn_abort ERR
-set -o errtrace -o errexit -o nounset -o pipefail
+set -x -o errtrace -o errexit -o nounset -o pipefail
 
 # vars
 export DOCKER_FROM_IMAGE=$(./ci/custom/get_docker_from_image.sh)

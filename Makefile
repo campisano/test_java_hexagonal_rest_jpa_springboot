@@ -13,3 +13,6 @@ run:
 
 debug:
 	mvn spring-boot:run $(DEBUG_5005)
+
+package: clean
+	mvn package spring-boot:repackage

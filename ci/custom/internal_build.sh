@@ -13,7 +13,7 @@ tar -C /usr/local -xzf "apache-maven-${MVN_VER}-bin.tar.gz"
 rm -f "apache-maven-${MVN_VER}-bin.tar.gz"
 
 export PATH="/usr/local/apache-maven-${MVN_VER}/bin:$PATH"
-mvn -B -q -ntp clean test package spring-boot:repackage
+mvn -ntp clean test package spring-boot:repackage
 
 PACKAGE="$(mvn -B -q help:evaluate -Dexpression=project.build.finalName -DforceStdout).jar"
 FOLDER="$(mvn -B -q help:evaluate -Dexpression=project.build.directory -DforceStdout)"

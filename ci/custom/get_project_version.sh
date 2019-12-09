@@ -2,6 +2,6 @@
 
 set -o errtrace -o errexit -o nounset -o pipefail
 
-NAME="$(mvn -B -o -q -Dexec.executable=echo -Dexec.args='${project.name}' --non-recursive exec:exec)"
-VERS="$(mvn -B -o -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)"
+NAME=$(mvn -B -q help:evaluate -Dexpression=project.name -DforceStdout)
+VERS=$(mvn -B -q help:evaluate -Dexpression=project.version -DforceStdout)
 echo "${NAME}-${VERS}"

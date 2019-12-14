@@ -2,8 +2,6 @@
 
 set -x -o errexit -o nounset -o pipefail
 
-sudo ./ci/custom/install_maven.sh
-
 # vars
 export DOCKER_FROM_IMAGE=$(./ci/custom/get_docker_from_image.sh)
 export PROJECT_NAME=$(./ci/custom/get_project_name.sh)

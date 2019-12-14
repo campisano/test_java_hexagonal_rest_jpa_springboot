@@ -3,7 +3,7 @@
 set -x -o errexit -o nounset -o pipefail
 
 # requisites
-./ci/custom/ci_requisites.sh
+sudo ./ci/custom/ci_requisites.sh
 
 # vars
 export DOCKER_FROM_IMAGE=$(./ci/custom/get_docker_from_image.sh)

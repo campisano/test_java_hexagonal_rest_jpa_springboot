@@ -2,4 +2,6 @@
 
 set -o errexit -o nounset -o pipefail
 
-echo openjdk:8-jdk-slim-stretch
+IMAGE="openjdk:8-jdk-slim-stretch"
+
+echo "${IMAGE}"

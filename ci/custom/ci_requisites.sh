@@ -2,9 +2,15 @@
 
 set -o errexit -o nounset -o pipefail
 
-if ! type -P xmlstarlet &>/dev/null
+REQS=""
+
+type -P docker &>/dev/null || REQS="${REQS} docker"
+type -P git &>/dev/null || REQS="${REQS} git"
+type -P xmlstarlet &>/dev/null || REQS="${REQS} xmlstarlet"
+
+if test -n "${REQS}"
 then
     apt-get -qq -y update
-    apt-get -qq -y install xmlstarlet > /dev/null
+    apt-get -qq -y install ${REQS} > /dev/null
     apt-get -qq -y clean
 fi;

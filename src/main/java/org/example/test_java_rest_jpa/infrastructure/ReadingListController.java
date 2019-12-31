@@ -37,10 +37,14 @@ public class ReadingListController {
 
     @RequestMapping(value = "/{reader}", method = RequestMethod.POST)
     public ResponseEntity<BookDto> addToReadingList(
-        @PathVariable("reader") String reader, @RequestBody BookDto requestBody) {
+        @PathVariable("reader") String reader,
+        @RequestBody BookDto requestBody) {
 
-        Book book = bookService.create(requestBody.getIsbn(), requestBody.getTitle(), requestBody.getAuthor(),
-                                       requestBody.getDescription());
+        Book book = bookService.create(
+            requestBody.getIsbn(),
+            requestBody.getTitle(),
+            requestBody.getAuthor(),
+            requestBody.getDescription());
         book.setReader(reader);
         bookService.save(book);
         BookDto responseBody = BookDtoFactory.translate(book);

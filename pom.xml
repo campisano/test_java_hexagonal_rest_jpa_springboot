@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.example</groupId>
     <artifactId>test_java_rest_jpa</artifactId>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
     <name>test_java_rest_jpa</name>
     <description>Demo project for Spring Boot</description>
 
@@ -17,7 +17,7 @@
         <spring-boot-dependencies.version>2.2.1.RELEASE</spring-boot-dependencies.version>
         <postgresql.version>9.4.1212</postgresql.version>
         <h2.version>1.4.200</h2.version>
-        <logback.version>1.1.7</logback.version>
+        <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -56,20 +56,6 @@
             <version>${h2.version}</version>
         </dependency>
 
-        <!-- runtime -->
-        <dependency>
-            <artifactId>logback-classic</artifactId>
-            <groupId>ch.qos.logback</groupId>
-            <version>${logback.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <artifactId>logback-core</artifactId>
-            <groupId>ch.qos.logback</groupId>
-            <version>${logback.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- test -->
         <dependency>
             <groupId>junit</groupId>
@@ -87,41 +73,34 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot-dependencies.version}</version>
             </plugin>
-        </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
-    <reporting>
-        <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <formats>
-                        <format>xml</format>
-                    </formats>
-                    <check />
-                </configuration>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
+
         </plugins>
-    </reporting>
+    </build>
 
 </project>

@@ -11,4 +11,4 @@ apt-get -qq -y clean
 ./ci/custom/install_maven.sh
 mvn -B -ntp cobertura:cobertura
 
-bash <(curl -s https://codecov.io/bash) -f target/cobertura/cobertura.ser -t "${TOKEN}"
+bash <(curl -s https://codecov.io/bash) -t "${TOKEN}"

@@ -64,11 +64,12 @@ public class ReadingListControllerTest {
     }
 }
 
-class BookServiceMock implements BookService {
+class BookServiceMock extends BookService {
 
     private List<Book> books;
 
     public BookServiceMock(List<Book> books) {
+        super(null);
         this.books = books;
     }
 

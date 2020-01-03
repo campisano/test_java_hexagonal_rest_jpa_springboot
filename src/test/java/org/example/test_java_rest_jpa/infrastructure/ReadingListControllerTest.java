@@ -21,7 +21,7 @@ public class ReadingListControllerTest {
             new BookServiceMock(new ArrayList<Book>()));
 
         // act
-        BookDto request_body =new BookDto(
+        BookDto request_body = new BookDto(
             "isbn", "title", "author", "description");
         ResponseEntity<BookDto> response =
             controller.addToReadingList("user", request_body);

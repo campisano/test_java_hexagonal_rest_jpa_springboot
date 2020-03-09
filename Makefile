@@ -1,18 +1,22 @@
-DEBUG_5005=-Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
+RUN_ARGS := -noverify -XX:TieredStopAtLevel=1 -Xnoagent -Djava.compiler=NONE
+DEBUG_ARGS := $(RUN_ARGS) -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000
 
-all: test
+.PHONY: test
+test: clean
+	mvn test -Drun.jvmArguments="$(RUN_ARGS)"
 
-clean:
-	mvn clean
+.PHONY: run
+run: clean
+	mvn spring-boot:run -Drun.jvmArguments="$(RUN_ARGS)"
 
-test:
-	mvn test
-
-run:
-	mvn spring-boot:run
-
-debug:
-	mvn spring-boot:run $(DEBUG_5005)
-
+.PHONY: package
 package: clean
 	mvn package spring-boot:repackage
+
+.PHONY: debug
+debug:
+	mvn spring-boot:run -Drun.jvmArguments="$(DEBUG_ARGS)"
+
+.PHONY: clean
+clean:
+	mvn clean

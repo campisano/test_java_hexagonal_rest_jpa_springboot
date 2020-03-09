@@ -1,36 +1,20 @@
 package org.example.test_java_rest_jpa.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.Objects;
 
-@Entity
 public class Book {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    private String reader;
     private String isbn;
     private String title;
     private String author;
     private String description;
+    private String reader;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getReader() {
-        return reader;
-    }
-
-    public void setReader(String reader) {
+    public Book(String isbn, String title, String author, String description, String reader) {
+        ensureCreable(isbn, title, author, description, reader);
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.description = description;
         this.reader = reader;
     }
 
@@ -38,31 +22,25 @@ public class Book {
         return isbn;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getReader() {
+        return reader;
+    }
+
+    private static void ensureCreable(String isbn, String title, String author, String description, String reader) {
+        Objects.requireNonNull(isbn, "Isbn cannot be null");
+        Objects.requireNonNull(title, "title cannot be null");
+        Objects.requireNonNull(author, "Author cannot be null");
     }
 }

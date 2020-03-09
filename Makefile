@@ -19,4 +19,4 @@ debug:
 
 .PHONY: clean
 clean:
-	mvn clean
+	mvn -q clean

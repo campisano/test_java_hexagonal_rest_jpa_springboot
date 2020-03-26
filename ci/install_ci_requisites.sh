@@ -6,7 +6,8 @@ REQS=""
 
 type -P docker &>/dev/null || REQS="${REQS} docker"
 type -P git &>/dev/null || REQS="${REQS} git"
-type -P xmlstarlet &>/dev/null || REQS="${REQS} xmlstarlet"
+
+REQS="${REQS} `./ci/custom/get_ci_requisites.sh`"
 
 if test -n "${REQS}"
 then

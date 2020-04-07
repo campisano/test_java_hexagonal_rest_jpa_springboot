@@ -3,19 +3,15 @@ DEBUG_ARGS := $(RUN_ARGS) -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend
 
 .PHONY: test
 test: clean
-	mvn test -Drun.jvmArguments="$(RUN_ARGS)"
+	mvn test
 
 .PHONY: run
 run: clean
-	mvn spring-boot:run -Drun.jvmArguments="$(RUN_ARGS)"
-
-.PHONY: package
-package: clean
-	mvn package spring-boot:repackage
+	mvn spring-boot:run -Dspring-boot.run.jvmArguments="$(RUN_ARGS)"
 
 .PHONY: debug
 debug:
-	mvn spring-boot:run -Drun.jvmArguments="$(DEBUG_ARGS)"
+	mvn spring-boot:run -Dspring-boot.run.jvmArguments="$(DEBUG_ARGS)"
 
 .PHONY: clean
 clean:

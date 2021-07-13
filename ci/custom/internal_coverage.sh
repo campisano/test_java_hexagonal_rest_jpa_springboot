@@ -36,4 +36,3 @@ export SONAR_USER_HOME=.custom_cache/sonar/home
     -Dsonar.java.source=1.8
 
 rm -rf .scannerwork
-mvn -q clean

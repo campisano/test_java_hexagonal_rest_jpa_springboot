@@ -9,7 +9,7 @@ rm -f /etc/apt/apt.conf.d/docker*
 export DEBIAN_FRONTEND=noninteractive
 apt-get -qq -y update
 apt-get -qq -y install --no-install-recommends apt-utils &> /dev/null
-apt-get -qq -y install --no-install-recommends libssl1.0.2 libcurl3 > /dev/null
+apt-get -qq -y install --no-install-recommends libssl1.1 libcurl4 > /dev/null
 apt-get -qq -y install --no-install-recommends wget unzip > /dev/null
 
 mv -n /var/cache/apt/* .custom_cache/var/cache/apt/

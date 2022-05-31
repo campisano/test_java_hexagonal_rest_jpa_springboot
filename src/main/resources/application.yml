@@ -1,5 +1,5 @@
 project:
-  name: test-java-rest-jpa
+  name: test_java_hexagonal_rest_jpa_springboot
 
 server:
   port: 8080

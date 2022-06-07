@@ -1,62 +1,60 @@
 package org.example.adapters;
 
 import java.util.Arrays;
-import java.util.List;
 
+import org.example.TestUtils;
 import org.example.application.dtos.AuthorDTO;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
+
+import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = Replace.ANY)
+@DirtiesContext
 public class TestHTTPAuthorsAdapter {
 
-    @Autowired
-    private TestRestTemplate rest;
+    @LocalServerPort
+    int port;
 
-    @Test
-    public void post() {
-        AuthorDTO requestBody = new AuthorDTO("name1");
-
-        ResponseEntity<DeserializableAuthorDTO> response = rest.postForEntity("/v1/authors", requestBody,
-                DeserializableAuthorDTO.class);
-
-        Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        Assertions.assertEquals(requestBody.toString(), response.getBody().toString());
+    @BeforeEach
+    public void setUp() {
+        RestAssured.port = port;
     }
 
     @Test
-    public void postWhenAlreadyExist() {
-        AuthorDTO a1 = new AuthorDTO("name1");
-        AuthorDTO a2 = new AuthorDTO("name2");
-        postAuthors(Arrays.asList(a1, a2));
+    public void post() throws Exception {
+        // Act
+        var author = new AuthorDTO("author1");
+        var response = TestUtils.JsonRequest().body(author).post("/v1/authors");
 
-        AuthorDTO requestBody = new AuthorDTO("name1");
-
-        ResponseEntity<DeserializableAuthorDTO> response = rest.postForEntity("/v1/authors", requestBody,
-                DeserializableAuthorDTO.class);
-
-        Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
-        Assertions.assertNull(response.getBody());
+        // Assert
+        Assertions.assertEquals(201, response.getStatusCode());
+        Assertions.assertEquals(TestUtils.toJson(author), TestUtils.toJson(response.jsonPath().prettify()));
     }
 
-    private void postAuthors(List<AuthorDTO> authors) {
-        authors.forEach(author -> {
-            rest.postForEntity("/v1/authors", author, DeserializableAuthorDTO.class);
+    @Test
+    public void postAlreadyExistent() {
+        // Arrange
+        var a1 = new AuthorDTO("author1");
+        var a2 = new AuthorDTO("author2");
+        Arrays.asList(a1, a2).forEach(a -> {
+            TestUtils.JsonRequest().body(a).post("/v1/authors");
         });
-    }
-}
 
-class DeserializableAuthorDTO extends AuthorDTO {
-    public DeserializableAuthorDTO() {
-        super(null);
+        // Act
+        var author = new AuthorDTO("author1");
+        var response = TestUtils.JsonRequest().body(author).post("/v1/authors");
+
+        // Assert
+        Assertions.assertEquals(422, response.getStatusCode());
+        Assertions.assertEquals("", response.getBody().asString());
     }
 }

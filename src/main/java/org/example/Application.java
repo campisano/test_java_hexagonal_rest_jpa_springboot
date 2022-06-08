@@ -6,9 +6,11 @@ import org.example.application.usecases.AddAuthorUseCase;
 import org.example.application.usecases.AddBookUseCase;
 import org.example.application.usecases.GetBookUseCase;
 import org.example.application.usecases.ListAllBooksUseCase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
 public class Application {
@@ -18,31 +20,39 @@ public class Application {
     }
 }
 
-@Service
-class SpringAddBookUseCase extends AddBookUseCase {
-    public SpringAddBookUseCase(BooksRepositoryPort booksRepository, AuthorsRepositoryPort authorsRepository) {
-        super(booksRepository, authorsRepository);
+@Configuration
+class InjectionProvider {
+
+    private AddBookUseCase addBookUseCase;
+    private GetBookUseCase getBookUseCase;
+    private ListAllBooksUseCase listAllBooksUseCase;
+    private AddAuthorUseCase addAuthorUseCase;
+
+    @Autowired
+    public InjectionProvider(AuthorsRepositoryPort authorsRepository, BooksRepositoryPort booksRepository) {
+        addBookUseCase = new AddBookUseCase(booksRepository, authorsRepository);
+        getBookUseCase = new GetBookUseCase(booksRepository);
+        listAllBooksUseCase = new ListAllBooksUseCase(booksRepository);
+        addAuthorUseCase = new AddAuthorUseCase(authorsRepository);
     }
 
-}
-
-@Service
-class SpringGetBookUseCase extends GetBookUseCase {
-    public SpringGetBookUseCase(BooksRepositoryPort booksRepository) {
-        super(booksRepository);
+    @Bean
+    public AddBookUseCase getAddBookUseCase() {
+        return addBookUseCase;
     }
-}
 
-@Service
-class SpringListAllBooksUseCase extends ListAllBooksUseCase {
-    public SpringListAllBooksUseCase(BooksRepositoryPort booksRepository) {
-        super(booksRepository);
+    @Bean
+    public GetBookUseCase getGetBookUseCase() {
+        return getBookUseCase;
     }
-}
 
-@Service
-class SpringAddAuthorUseCase extends AddAuthorUseCase {
-    public SpringAddAuthorUseCase(AuthorsRepositoryPort authorsRepository) {
-        super(authorsRepository);
+    @Bean
+    public ListAllBooksUseCase getListAllBooksUseCase() {
+        return listAllBooksUseCase;
+    }
+
+    @Bean
+    public AddAuthorUseCase getAddAuthorUseCase() {
+        return addAuthorUseCase;
     }
 }

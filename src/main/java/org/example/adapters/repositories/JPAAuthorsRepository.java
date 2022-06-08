@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.example.adapters.repositories.models.AuthorModel;
 import org.example.adapters.repositories.models.translators.AuthorModelTranslator;
 import org.example.application.dtos.AuthorDTO;
@@ -14,15 +16,16 @@ import org.springframework.stereotype.Repository;
 @Component
 public class JPAAuthorsRepository implements AuthorsRepositoryPort {
 
-    private MicronautAuthorsRepository authorsRepository;
+    private SpringAuthorsRepository authorsRepository;
 
-    public JPAAuthorsRepository(MicronautAuthorsRepository authorsRepository) {
+    public JPAAuthorsRepository(SpringAuthorsRepository authorsRepository) {
         this.authorsRepository = authorsRepository;
     }
 
+    @Transactional
     @Override
     public AuthorDTO create(AuthorDTO dto) {
-        AuthorModel model = AuthorModelTranslator.fromDTO(dto);
+        var model = AuthorModelTranslator.fromDTO(dto);
 
         model = authorsRepository.save(model);
 
@@ -31,7 +34,7 @@ public class JPAAuthorsRepository implements AuthorsRepositoryPort {
 
     @Override
     public Optional<AuthorDTO> findByName(String name) {
-        Optional<AuthorModel> optModel = authorsRepository.findByName(name);
+        var optModel = authorsRepository.findByName(name);
 
         if (!optModel.isPresent()) {
             return Optional.<AuthorDTO>empty();
@@ -47,7 +50,7 @@ public class JPAAuthorsRepository implements AuthorsRepositoryPort {
 }
 
 @Repository
-interface MicronautAuthorsRepository extends org.springframework.data.repository.Repository<AuthorModel, Long> {
+interface SpringAuthorsRepository extends org.springframework.data.repository.Repository<AuthorModel, Long> {
     public List<AuthorModel> findAll();
 
     public Optional<AuthorModel> findByName(String name);

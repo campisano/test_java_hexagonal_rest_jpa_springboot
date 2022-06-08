@@ -17,6 +17,7 @@ import org.example.application.ports.in.ListAllBooksUseCasePort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/books")
+@RequestMapping(path = "/v1/books", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class HTTPBooksController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HTTPBooksController.class);
 
@@ -46,16 +47,19 @@ public class HTTPBooksController {
 
         if (!body.isPresent()) {
             LOGGER.error("request without body");
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         try {
-            BookDTO book = addBookUseCase.execute(
+            var book = addBookUseCase.execute(
                     new BookDTO(body.get().isbn, body.get().title, body.get().authors, body.get().description));
             LOGGER.info("created, book={}", book);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(book);
         } catch (IsbnAlreadyExistsException | AuthorInvalidException | BookInvalidException exception) {
             LOGGER.error("exception, message={}", exception.getMessage());
+
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
         }
     }
@@ -65,11 +69,13 @@ public class HTTPBooksController {
         LOGGER.info("method={}, path={}, isbn={}", request.getMethod(), request.getRequestURI(), isbn);
 
         try {
-            BookDTO book = getBookUseCase.execute(isbn);
+            var book = getBookUseCase.execute(isbn);
             LOGGER.info("ok, isbn={}", isbn);
+
             return ResponseEntity.ok(book);
         } catch (IsbnNotExistsException exception) {
             LOGGER.error("exception, message={}", exception.getMessage());
+
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -78,8 +84,9 @@ public class HTTPBooksController {
     public ResponseEntity<List<BookDTO>> listAll(HttpServletRequest request) {
         LOGGER.info("method={}, path={}", request.getMethod(), request.getRequestURI());
 
-        List<BookDTO> books = listAllBooksUseCase.execute();
+        var books = listAllBooksUseCase.execute();
         LOGGER.info("ok");
+
         return ResponseEntity.ok(books);
     }
 }

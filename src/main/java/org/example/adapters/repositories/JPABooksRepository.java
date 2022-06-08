@@ -2,10 +2,10 @@ package org.example.adapters.repositories;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.example.adapters.repositories.models.AuthorModel;
+import javax.transaction.Transactional;
+
 import org.example.adapters.repositories.models.BookModel;
 import org.example.adapters.repositories.models.translators.BookModelTranslator;
 import org.example.application.dtos.BookDTO;
@@ -16,18 +16,19 @@ import org.springframework.stereotype.Repository;
 @Component
 public class JPABooksRepository implements BooksRepositoryPort {
 
-    private MicronautBooksRepository booksRepository;
-    private MicronautAuthorsRepository authorsRepository;
+    private SpringBooksRepository booksRepository;
+    private SpringAuthorsRepository authorsRepository;
 
-    public JPABooksRepository(MicronautBooksRepository booksRepository, MicronautAuthorsRepository authorsRepository) {
+    public JPABooksRepository(SpringBooksRepository booksRepository, SpringAuthorsRepository authorsRepository) {
         this.booksRepository = booksRepository;
         this.authorsRepository = authorsRepository;
     }
 
+    @Transactional
     @Override
     public BookDTO create(BookDTO dto) {
-        Set<AuthorModel> authors = authorsRepository.findByNameIn(dto.getAuthors());
-        BookModel model = BookModelTranslator.fromDTO(dto, authors);
+        var authors = authorsRepository.findByNameIn(dto.getAuthors());
+        var model = BookModelTranslator.fromDTO(dto, authors);
 
         model = booksRepository.save(model);
 
@@ -43,7 +44,7 @@ public class JPABooksRepository implements BooksRepositoryPort {
 
     @Override
     public Optional<BookDTO> findByIsbn(String isbn) {
-        Optional<BookModel> optModel = booksRepository.findByIsbn(isbn);
+        var optModel = booksRepository.findByIsbn(isbn);
 
         if (!optModel.isPresent()) {
             return Optional.<BookDTO>empty();
@@ -54,7 +55,7 @@ public class JPABooksRepository implements BooksRepositoryPort {
 }
 
 @Repository
-interface MicronautBooksRepository extends org.springframework.data.repository.Repository<BookModel, Long> {
+interface SpringBooksRepository extends org.springframework.data.repository.Repository<BookModel, Long> {
     public List<BookModel> findAll();
 
     public Optional<BookModel> findByIsbn(String isbn);
